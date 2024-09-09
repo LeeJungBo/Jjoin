@@ -11,6 +11,9 @@
 
 
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
   config:
     import: security-variable.yml
   application:

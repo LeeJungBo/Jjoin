@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+#wrap{
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.contents > .input-box{
+	width: 400px;
+	height: 650px
+}
+
+.input-box > .put{
+	margin: 0 auto;
+}
+
+.put > .duplicate-btn{
+    width: 302px;
+    height: 25px;
+}
+
+footer{
+	width: 1200px;
+	height: 190px;
+}
+
+footer > .sub-login{
+	width: 400px;
+    height: 110px;
+}
