@@ -17,7 +17,8 @@
                 , `password`
             )
         VALUES
-            (   #{email}
+            (  
+                 #{email}
                 , #{phoneNumber}
                 , #{nickName}
                 , #{name}

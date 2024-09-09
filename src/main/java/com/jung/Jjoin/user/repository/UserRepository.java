@@ -12,4 +12,6 @@ public interface UserRepository {
 			,@Param("nickName") String nickName
 			,@Param("name") String name
 			,@Param("password") String  password);
+	 
+	
 }
