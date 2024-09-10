@@ -25,5 +25,37 @@
                 , #{password}
             )
       </insert>
+      
+      <select id="selectCountByEmail" parameterType="String" resultType="int">
+          SELECT
+                count(*)
+          FROM
+                `user`
+          WHERE
+                `email` = #{email}
+      </select>
+      
+      <select id="selectUser" parameterType="map" resultType="com.jung.Jjoin.user.domain.User">
+          SELECT
+                `id`
+                , `email`
+                , `phoneNumber`
+                , `nickName`
+                , `name`
+                , `password`
+                , `profileImage`
+                , `createdAt`
+                , `updatedAt`
+          FROM
+                `user`
+          WHERE
+                `email` = #{email}
+          AND
+                `password` = #{password}
+      
+      </select>
+      
+      
+      
  
  </mapper>

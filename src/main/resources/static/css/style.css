@@ -10,8 +10,17 @@
 	height: 650px
 }
 
+.contents > .input-box2{
+    width: 400px;
+    height: 560px
+}
+
 .input-box > .put{
 	margin: 0 auto;
+}
+
+.input-box2 > .put2{
+    margin: 0 auto;
 }
 
 .put > .duplicate-btn{

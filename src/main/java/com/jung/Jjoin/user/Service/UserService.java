@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.jung.Jjoin.common.HashingEncoder;
+import com.jung.Jjoin.user.domain.User;
 import com.jung.Jjoin.user.repository.UserRepository;
 
 @Service
@@ -22,6 +23,7 @@ public class UserService {
 		this.encoder = encoder;
 	}
 	
+	
 	public int addUser(
 			 String email
 			, String phoneNumber
@@ -29,6 +31,10 @@ public class UserService {
 			, String name
 			, String password) {
 		
+		
+		if(nickName == "") {
+			nickName += name;
+		}
 		
 		
 		String encryptPassword = encoder.encode(password);
@@ -39,6 +45,24 @@ public class UserService {
 		return userRepository.insertUser(email, phoneNumber, nickName, name, encryptPassword);
 		
 		
+	}
+	
+	public Boolean isDuplicateEmail(String email) {
+		
+		int count = userRepository.selectCountByEmail(email);
+		
+		if(count == 0) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
+	public User getUser(String email, String password) {
+		
+		String encryptPassword = encoder.encode(password);
+		
+		return userRepository.selectUser(email, encryptPassword);
 	}
 	
 }
