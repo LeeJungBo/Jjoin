@@ -46,7 +46,7 @@
         <script>
             $(document).ready(function(){
             	
-            	$("#emailDuplicateBtn").on("click",function(){
+               $("#emailDuplicateBtn").on("click",function(){
             		
             		let email = $("#emailInput").val();
             		
@@ -74,6 +74,7 @@
             		});
             		
             	});
+            	
             	
             	
             	
@@ -112,20 +113,37 @@
             		}
             		
             		$.ajax({
-            			type:"post"
-            			, url:"/user/join"
-            			, data:{"email":email, "phoneNumber":phoneNumber, "nickName":nickName, "name":name, "password":password}
-            		    , success:function(data){
-            		    	if(data.result == "success"){
-            		    		alert("회원가입 성공");
-            		    	}else{
-            		    		alert("회원가입 실패");
-            		    	}
-            		    }
-            		    , error:function(){
-            		    	alert("회원가입 에러.");
-            		    }
-            		});
+                        type:"get"
+                        , url:"/user/duplicate-email"
+                        , data:{"email":email}
+                        , success:function(data){
+                            if(data.isDuplicate == true){
+                              alert("중복된 이메일입니다.")
+                            }else{
+                            	
+		                      $.ajax({
+		            			type:"post"
+		            			, url:"/user/join"
+		            			, data:{"email":email, "phoneNumber":phoneNumber, "nickName":nickName, "name":name, "password":password}
+		            		    , success:function(data){
+		            		    	if(data.result == "success"){
+		            		    		alert("회원가입 성공");
+		            		    	}else{
+		            		    		alert("회원가입 실패");
+		            		    	}
+		            		    }
+		            		    , error:function(){
+		            		    	alert("회원가입 에러.");
+		            		    }
+		            		  });	
+		                    }
+                          }
+                        , error:function(){
+                            alert("중복확인 에러입니다.")
+                        }
+                    });
+            		
+            		
             		
             		
             		
