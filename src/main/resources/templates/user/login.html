@@ -20,9 +20,11 @@
 	            <div class="mt-3 input-box2 border border-dark">
 	                <div class="mt-3 display-3 text-center font-weight-bold">JJoin</div>
 	                <div class="put2 col-10">
+	                    <form id="loginForm"><!-- 엔터만 쳐도 나올수있게 -->
 	                    <input type="text" placeholder="이메일을 입력해주세요" class="mt-4 form-control" id="emailInput">
 	                    <input type="password" placeholder="비밀번호를 입력해주세요" class="mt-3 form-control" id="passwordInput">
-	                    <button type="button" class="mt-3 btn btn-success d-flex align-items-center justify-content-center form-control" id="loginBtn"><div class="small">로그인</div></button>
+	                    <button type="submit" class="mt-3 btn btn-success d-flex align-items-center justify-content-center form-control" id="loginBtn"><div class="small">로그인</div></button>
+	                    </form>
 	                    <button type="button" class="mt-5 btn btn-warning d-flex align-items-center justify-content-center form-control"><div class="small">카카오톡 이메일 로그인</div></button>
 	                    <button type="button" class="mt-3 btn btn-primary d-flex align-items-center justify-content-center form-control"><div class="small">페이스북 이메일 로그인</div></button>
 	                    <a href="http://localhost:8080/user/join-view"><button type="button" class="mt-5 btn border border-dark d-flex align-items-center justify-content-center form-control"><div class="small">회원가입</div></button></a>    
@@ -43,7 +45,11 @@
         
         $(document).ready(function(){
         	
-        	$("#loginBtn").on("click",function(){
+        	$("#loginForm").on("submit",function(e){
+        		
+        		// form 기능중 파라미터가 넣을 수있게끔
+        		// 이벤트가 가진 기본 기능을 취소 시키기()
+        		e.preventDefault();// submit에 있는 기본 기능을 막는다(취소시킨다.) 엔터로도 될수 있고 클릭으로도 될수있게
         		
         		let email = $("#emailInput").val();
         		let password = $("#passwordInput").val();
@@ -64,7 +70,7 @@
         			, data:{"email":email, "password":password}
         		    , success:function(data){
         		    	if(data.result == "success"){
-        		    		alert("로그인 성공입니다.");
+        		    		location.href="/post/timeline-create";
         		    	}else{
         		    		alert("로그인 실패입니다.");
         		    	}

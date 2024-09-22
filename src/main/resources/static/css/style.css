@@ -15,6 +15,11 @@
     height: 560px
 }
 
+.contents > .input-box3{
+    width: 500px;
+    height: 700px
+}
+
 .input-box > .put{
 	margin: 0 auto;
 }
@@ -22,6 +27,64 @@
 .input-box2 > .put2{
     margin: 0 auto;
 }
+
+.input-box3 > .header{
+    height: 100px;
+    background-color: #f6f6f6;
+}
+
+.input-box3 > .post{
+	 height: 500px;
+}
+
+
+
+.post > .post-up{
+	height:60px;
+}
+
+.post-up > .profile-Image{
+	width: 10px;
+	height: 10px;
+}
+
+.post > .post-middle{
+    height: 280px;
+}
+
+
+
+.post-middle2 > .card{
+	height: 430px;
+	width: 450px;
+    margin: 0 auto;
+}
+
+.card > .imageBox{
+	height: 300px;
+	width: 430px;
+	margin: 0 auto;
+}
+
+.imageBox > .image-thumbnail{
+	width:100%;
+    height:100%;
+    object-fit: scale-down;
+}
+
+
+.post > .post-down{
+    height:160px;
+}
+
+
+
+.input-box3 > .footer{
+    height: 100px;
+    background-color: #f6f6f6;
+}
+
+
 
 .put > .duplicate-btn{
     width: 302px;

@@ -55,7 +55,23 @@
       
       </select>
       
-      
+      <select id="selectUserById" parameterType="int"
+      resultType="com.jung.Jjoin.user.domain.User">
+      SELECT
+                `id`
+                , `email`
+                , `phoneNumber`
+                , `nickName`
+                , `name`
+                , `password`
+                , `profileImage`
+                , `createdAt`
+                , `updatedAt`
+          FROM
+                `user`
+          WHERE
+                `id` = #{id}
+      </select>
       
  
  </mapper>

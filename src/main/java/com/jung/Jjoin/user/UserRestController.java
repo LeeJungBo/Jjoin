@@ -82,6 +82,7 @@ public class UserRestController {
 			HttpSession session= request.getSession();
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userName", user.getName());
+			session.setAttribute("profileImage", user.getProfileImage());
 		}else {
 			resultMap.put("result", "fail");
 		}

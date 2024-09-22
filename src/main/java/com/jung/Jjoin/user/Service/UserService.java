@@ -65,4 +65,8 @@ public class UserService {
 		return userRepository.selectUser(email, encryptPassword);
 	}
 	
+	public User getUserById(int id) {//postService에서 pk를 통해 조회하기 위한 구조
+		return userRepository.selectUserById(id); // 얘를 PostService에서 호출 // 이런 구조로 해야 바람직하다.
+	}
+	
 }

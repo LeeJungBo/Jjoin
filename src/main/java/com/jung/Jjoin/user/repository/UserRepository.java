@@ -20,6 +20,8 @@ public interface UserRepository {
 	public User selectUser(
 			@Param("email") String email
 			, @Param("password") String password);
+	
+	public User selectUserById(@Param("id") int id);
 	 
 	
 }

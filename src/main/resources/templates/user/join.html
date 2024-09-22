@@ -15,7 +15,7 @@
             <div class="mt-3 input-box border border-dark">
                 <div class="mt-3 display-3 text-center font-weight-bold">JJoin</div>
                 <h3 class="mt-3 text-center">JJoin에 가입하면 많은 사람들과<br> 소통하세요</h3>
-                <div class="put col-10">
+                <div class="put col-10"> 
 	                <input type="text" placeholder="이메일(@를 입력해주세요)" class="mt-4 form-control" id="emailInput">
 	                <button type="button" class="duplicate-btn btn btn-secondary d-flex align-items-center justify-content-center" id="emailDuplicateBtn"><div class="small">이메일 중복확인</div></button>
 	                <div class="small d-none text-danger" id="duplicateText">중복된 email입니다.</div>
@@ -25,7 +25,7 @@
 	                <input type="text" placeholder="성명" class="mt-3 form-control nameInput" id="nameInput">
 	                <input type="password" placeholder="비밀번호" class="mt-3 form-control" id="passwordInput">
 	                <input type="password" placeholder="비밀번호 확인" class="mt-3 form-control" id="posswordConfirmInput">
-	                <button type="button" class="mt-3 btn btn-secondary d-flex align-items-center justify-content-center form-control" id="joinBtn"><div class="small">가입</div></button>       
+	                <button type="button" class="mt-3 btn btn-secondary d-flex align-items-center justify-content-center form-control" id="joinBtn"><div class="small">가입</div></button>
                 </div>
             </div>
         </section>
@@ -46,6 +46,20 @@
         <script>
             $(document).ready(function(){
             	
+            	// 전역변수를 만들어줘서 최종적으로 #joinBtn 버튼을 눌렀을때도 중복여부와 중복체크를 했는지 영향을 줄수 있게 하는거
+            	// 중복체크를 했는지 안했는지
+            	var checkDuplicate = false;
+            	// 중복됐는지 체크를 해주는거
+            	var isDuplicateEmail = true;
+            	
+            	$("#emailInput").on("input",function(){
+            		// 중복확인 과정 초기화() input태그 자체에 이벤트를 걸어 중복확인이 뜨고 나서 입력칸을 바꾼다면 다시 초기화가 되게 하는거
+            		checkDuplicate = false;
+            		isDuplicateEmail = true;
+            		$("#availableText").addClass("d-none");
+            		$("#duplicateText").addClass("d-none");
+            	});
+            	
                $("#emailDuplicateBtn").on("click",function(){
             		
             		let email = $("#emailInput").val();
@@ -60,12 +74,17 @@
             			, url:"/user/duplicate-email"
             			, data:{"email":email}
             		    , success:function(data){
+            		    	
+            		    	checkDuplicate = true;
+            		    	isDuplicateEmail = data.isDuplicate;
             		    	if(data.isDuplicate == true){
             		    		$("#duplicateText").removeClass("d-none");
             		    		$("#availableText").addClass("d-none");
+            		    		// isDuplicateEmail = true;
             		    	}else{
             		    		$("#duplicateText").addClass("d-none");
                                 $("#availableText").removeClass("d-none");
+                                // isDuplicateEmail = false;
             		    	}
             		    }
             		    , error:function(){
@@ -90,6 +109,17 @@
             		if(email == ""){
             			alert("이메일을 입력하세요");
             			return;
+            		}
+            		
+            		// 중복확인을 진행하지 않은 경우
+            		if(!checkDuplicate){
+            			alert("이메일 중복확인을 해주세요");
+            			return;
+            		}
+            		
+            		// 아이디가 중복된 경우
+            		if(isDuplicateEmail){
+            			alert("이메일이 중복되었습니다.");
             		}
             		
             		if(phoneNumber == ""){
@@ -117,27 +147,32 @@
                         , url:"/user/duplicate-email"
                         , data:{"email":email}
                         , success:function(data){
-                            if(data.isDuplicate == true){
-                              alert("중복된 이메일입니다.")
-                            }else{
-                            	
-		                      $.ajax({
-		            			type:"post"
-		            			, url:"/user/join"
-		            			, data:{"email":email, "phoneNumber":phoneNumber, "nickName":nickName, "name":name, "password":password}
-		            		    , success:function(data){
-		            		    	if(data.result == "success"){
-		            		    		alert("회원가입 성공");
-		            		    	}else{
-		            		    		alert("회원가입 실패");
-		            		    	}
-		            		    }
-		            		    , error:function(){
-		            		    	alert("회원가입 에러.");
-		            		    }
-		            		  });	
-		                    }
-                          }
+                            
+                        	if(data.isDuplicate == true){
+                              
+                        		alert("중복된 이메일입니다.")
+                            
+                        	}else{
+                            	location.href = "/user/login-view";
+//			                      $.ajax({
+//				            			type:"post"
+//				            			, url:"/user/join"
+//				            			, data:{"email":email, "phoneNumber":phoneNumber, "nickName":nickName, "name":name, "password":password}
+//				            		    , success:function(data){
+//				            		    	if(data.result == "success"){
+//				            		    		alert("회원가입 성공");
+//				            		    	}else{
+//				            		    		alert("회원가입 실패");
+//				            		    	}
+//				            		    }
+//				            		    , error:function(){
+//				            		    	alert("회원가입 에러.");
+//				            		    }
+//			            		  });	
+		                    
+                             }
+                          
+                        }
                         , error:function(){
                             alert("중복확인 에러입니다.")
                         }
