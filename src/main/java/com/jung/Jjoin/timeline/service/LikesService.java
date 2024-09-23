@@ -30,6 +30,27 @@ public class LikesService {
 		
 	}
 	
+	// 게시글에 대응되는 좋아요 개수 조회
+	public int getLikeCount(int postId){
+		
+		return likesRepository.countByPostId(postId);
+		
+	}
+	
+	
+	// 특정사용자가 특정 게시글에 좋아요를 했는지 안했는지
+	public boolean isLikesByuserIdAndPostId(int userId, int postId){
+		// 특정 userId와 postId가 일치하는 행 조회
+		
+		int count = likesRepository.countByUserIdAndPostId(userId, postId);
+		
+		if(count == 0) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
 	
 //	public int deleteLikes(int imageId, int userId) {
 //		return likesRepository.deleteByPostIdAndUserId(imageId, userId);

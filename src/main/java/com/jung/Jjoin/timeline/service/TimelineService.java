@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.jung.Jjoin.common.FileManager;
 import com.jung.Jjoin.timeline.domain.Post;
 import com.jung.Jjoin.timeline.dto.CardView;
-import com.jung.Jjoin.timeline.repository.LikesRepository;
+import com.jung.Jjoin.timeline.dto.CommentView;
 import com.jung.Jjoin.timeline.repository.TimelineRepository;
 import com.jung.Jjoin.user.Service.UserService;
 import com.jung.Jjoin.user.domain.User;
@@ -19,12 +19,19 @@ public class TimelineService {
 
 	private TimelineRepository timelineRepository;
 	private UserService userService; // 서비스에서 번거롭더라도 만들어주고 호출해주는것이 바람직한 형태 userRepository에서 끌고 오는것보다
-	private LikesRepository likesRepository;
+	private LikesService likesService;
+	private CommentService commentService;
 	
-	public TimelineService(TimelineRepository timelineRepository, UserService userService) {
+	public TimelineService(
+			TimelineRepository timelineRepository, 
+			UserService userService, 
+			LikesService likesService,
+			CommentService commentService) {
+		
 		this.timelineRepository = timelineRepository;
 		this.userService = userService;
-		this.likesRepository = likesRepository;
+		this.likesService = likesService;
+		this.commentService = commentService;
 	}
 	
 	
@@ -43,7 +50,7 @@ public class TimelineService {
 		return result;
 	}
 	
-	public List<CardView> getTimeline() {
+	public List<CardView> getTimeline(int loginUserId) {
 		
 		List<Post> postList = timelineRepository.findAllByOrderByIdDesc();
 		
@@ -57,6 +64,15 @@ public class TimelineService {
 			int postId = post.getId();
 			User user = userService.getUserById(userId); // 이래야 카드에 있는 user정보를 갖고올수 있음 // 카드에 넣을 멤버변수를 채워줄것들이 준비되어있음
 //			int likesCount= likesRepository.likesCountByPostId(postId);
+			List<CommentView> commentList = commentService.getCommentListByPostId(post.getId());
+			
+//			Comment comment = new Comment(); 혹시 댓글의 유저정보를 갖고올라면 HttpSession을 그냥 넣어버리면 될려나 (맞았다 ㅋㅋㅋ loginUserId 이걸통해서 알수있음)
+			int likesCount= likesService.getLikeCount(post.getId()); //(post.getId() postId를 이걸로 표현
+			boolean isLikes = likesService.isLikesByuserIdAndPostId(loginUserId, post.getId()); // loginUserId 이건 로그인한 사용자의 id를 써야함
+															// 그래야 지금 로그인되어있는 사용자가 좋아요를 클릭했을때 하트모양이 채워짐
+			
+			
+			
 			
 			CardView cardView = CardView.builder()
 								.postId(post.getId())
@@ -65,7 +81,9 @@ public class TimelineService {
 								.imagePath(post.getImagePath())
 								.nickname(user.getNickName())
 								.profileImage(user.getProfileImage())
-//								.likesCount(likesCount)
+								.commentList(commentList)
+								.likesCount(likesCount)
+								.isLikes(isLikes)
 								.build();
 			
 			cardViewList.add(cardView);

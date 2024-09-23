@@ -29,7 +29,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Table(name="likes",uniqueConstraints = {@UniqueConstraint(name = "userAndLikesStatus", columnNames = {"postId","userId"})})
+@Table(name="likes")
+//uniqueConstraints = {@UniqueConstraint(name = "userAndLikesStatus", columnNames = {"postId","userId"})})
 // like란 키워드는 쿼리의 문법으로 사용하는거v  따라서 여기다가도 ``를 붙여주는게 좋음
 @Entity    
 public class Likes {

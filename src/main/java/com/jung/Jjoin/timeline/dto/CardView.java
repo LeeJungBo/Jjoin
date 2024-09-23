@@ -1,5 +1,10 @@
 package com.jung.Jjoin.timeline.dto;
 
+import java.util.List;
+
+import com.jung.Jjoin.timeline.domain.Comment;
+import com.jung.Jjoin.user.domain.User;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,9 +22,11 @@ public class CardView {
 	private String nickname;
 	private String profileImage;
 	
-	private boolean likesStatus;
-	private int likesCount;
+	private List<User> user;
+	private List<CommentView> commentList;
 	
+	private int likesCount;
+	private boolean isLikes;
 	
 
 	

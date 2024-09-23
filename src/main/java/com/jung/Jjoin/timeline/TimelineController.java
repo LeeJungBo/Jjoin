@@ -31,9 +31,12 @@ public class TimelineController {
 			 Model model
 			, HttpSession session) {
 		
-		int userId = (Integer)session.getAttribute("userId");
-		List<CardView> cardViewList = timelineService.getTimeline();
+		int loginUserId = (Integer)session.getAttribute("userId");
+		List<CardView> cardViewList = timelineService.getTimeline(loginUserId);
 		model.addAttribute("cardViewList", cardViewList);
+		
+		
+		
 		return "timeline/timelineDetailView";
 		
 	}
