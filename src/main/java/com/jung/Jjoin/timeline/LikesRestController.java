@@ -3,6 +3,7 @@ package com.jung.Jjoin.timeline;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +42,29 @@ public class LikesRestController {
 		
 	}
 	
+	@DeleteMapping("/timeline/unlike")
+	public Map<String, String>unlike(
+			@RequestParam("postId") int postId
+			, HttpSession session){
+		
+		int userId = (Integer)session.getAttribute("userId");
+		
+		// 2번 호출했따는건 메소드가 2개있었다는거고 그러면 결국 메소드가 두개있었다는거 likesService.deleteLike(postId, userId) 이게 2개 있었음
+		
+		
+		Map<String, String> resultMap = new HashMap<>();
+		
+		if(likesService.deleteLike(postId, userId)) {
+			
+			resultMap.put("result", "success");
+		}else{
+			
+			resultMap.put("result", "fail");
+		}
+		
+		return resultMap;
+		
+	}
 	
 	
 	

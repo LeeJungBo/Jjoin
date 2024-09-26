@@ -1,7 +1,11 @@
 package com.jung.Jjoin.timeline.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
+import com.jung.Jjoin.timeline.domain.Comment;
 import com.jung.Jjoin.timeline.domain.Likes;
 import com.jung.Jjoin.timeline.repository.LikesRepository;
 
@@ -51,6 +55,33 @@ public class LikesService {
 		}
 	}
 	
+	 
+	public void deleteLikes(int postId) {
+		
+		List<Likes> likesList= likesRepository.findByPostIdOrderByIdDesc(postId);
+		
+		likesRepository.deleteAll(likesList);
+	
+	 }
+	
+	public boolean deleteLike(int postId, int userId) {
+		
+		
+		
+		Optional<Likes> optionalLike = likesRepository.findByPostIdAndUserId(postId, userId);
+		Likes likes = optionalLike.orElse(null);
+		
+		if(likes != null) {
+			likesRepository.delete(likes);
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+	
+	
+	
 	
 //	public int deleteLikes(int imageId, int userId) {
 //		return likesRepository.deleteByPostIdAndUserId(imageId, userId);
@@ -83,6 +114,9 @@ public class LikesService {
 //			java //게시판의 게시글을 삭제하는 메서드 @Transactional public void removeBoard(Long id) throws Exception { replyDAO.removeAll(id); //삭제할 게시글의 답글 삭제 boardDAO.deleteBoard(id); //게시글 삭제 }
 //
 //			@Transactional이 붙은 메서드는 메서드가 포함하고 있는 작업 중에 하나라도 실패할 경우 전체 작업을 취소한다.
+	
+	
+	
 	
 	
 }

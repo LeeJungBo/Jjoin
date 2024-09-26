@@ -46,6 +46,40 @@ public class FileManager {
 		
 	}
 	
+	public static boolean removeFile(String filePath) { // filePath는 현재 이경로 '/images/2_8120980/test.png' 이때 image는 임의로 붙여놓은거 즉, 떼야한다.
+		
+		if(filePath == null) {
+			return false;
+		}
+		
+		String fullFilePath = FILE_UPLOAD_PATH + filePath.replace("/images","");
+		
+		Path path = Paths.get(fullFilePath); // 위 문자열을 객체로 파일의 경로를 가져온거
+		
+		Path directoryPath = path.getParent(); // path의 상위 객체를 가져온거 즉, 파일(path)이 들어 있는 폴더(path의 상위 객체)
+		
+		if(Files.exists(path) && Files.exists(directoryPath)) {
+			try {
+				Files.delete(path);
+				Files.delete(directoryPath);
+			} catch (IOException e) {
+			
+				return false;
+				
+			}
+			
+			return true;
+			
+		}else {
+			
+			return false;
+		
+		}
+		
+		
+		
+	}
+	
 	
 	
 	

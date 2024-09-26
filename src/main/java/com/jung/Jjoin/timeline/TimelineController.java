@@ -6,7 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.jung.Jjoin.timeline.domain.Post;
 import com.jung.Jjoin.timeline.dto.CardView;
 import com.jung.Jjoin.timeline.service.TimelineService;
 
@@ -41,6 +43,15 @@ public class TimelineController {
 		
 	}
 	
+	@GetMapping("/timeline-update")
+	public String timelineUpdate(){
+		
+		
+		
+		
+		return "timeline/timelineUpdateView";
+	
+	}
 	
 	
 	

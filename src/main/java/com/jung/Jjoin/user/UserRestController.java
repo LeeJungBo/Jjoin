@@ -81,11 +81,13 @@ public class UserRestController {
 			// 유지할수 있게 정보를 계속해서 잡고있다.
 			HttpSession session= request.getSession();
 			session.setAttribute("userId", user.getId());
-			session.setAttribute("userName", user.getName());
 			session.setAttribute("profileImage", user.getProfileImage());
-			session.setAttribute("nickname", user.getNickName());
+			session.setAttribute("nickName", user.getNickName());
+		
 		}else {
+		
 			resultMap.put("result", "fail");
+		
 		}
 		
 		return resultMap;

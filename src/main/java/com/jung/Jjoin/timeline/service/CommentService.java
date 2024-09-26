@@ -2,10 +2,12 @@ package com.jung.Jjoin.timeline.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.jung.Jjoin.timeline.domain.Comment;
+import com.jung.Jjoin.timeline.domain.Post;
 import com.jung.Jjoin.timeline.dto.CommentView;
 import com.jung.Jjoin.timeline.repository.CommentRepository;
 import com.jung.Jjoin.user.Service.UserService;
@@ -27,6 +29,8 @@ public class CommentService {
 		
 	}
 	
+	
+	
 	public Comment addComment(int postId, int userId, String contents) {
 		Comment comment= Comment.builder()
 								.postId(postId)
@@ -39,6 +43,7 @@ public class CommentService {
 	}
 	
 	
+	// List<Comment>를 바꿔준것
 	public List<CommentView> getCommentListByPostId(int postId){
 		
 		List<Comment> commentList = commentRepository.findByPostIdOrderByIdDesc(postId);
@@ -54,6 +59,7 @@ public class CommentService {
 					   				  .userId(userId)
 					   				  .contents(comment.getContents())
 					   				  .loginEmail(user.getEmail())
+					   				  .nickName(user.getNickName())
 					   				  .build();
 			
 			commentViewList.add(commentView);
@@ -62,8 +68,52 @@ public class CommentService {
 		
 		return commentViewList;
 		
-	}
+	 }
 	
+		public Comment updateComment(int id, String contents) {
+			
+			Optional<Comment> optionalComment = commentRepository.findById(id);
+			
+			Comment comment = optionalComment.orElse(null);
+			
+			if(comment != null) {
+				Comment updateComment = comment.toBuilder()
+											   .contents(contents)
+											   .build();
+				
+				return commentRepository.save(updateComment);
+			
+			}else {
+				return null;
+			}
+			
+			 
+			
+		}
+	
+	
+		public void deleteComment(int postId) {
+		
+			List<Comment> commentList = commentRepository.findByPostIdOrderByIdDesc(postId);
+			
+			commentRepository.deleteAll(commentList);
+		}
+		
+		
+		
+		public int deleteCommentById(int id) {
+			
+			Optional<Comment> optionalComment = commentRepository.findById(id);
+			
+			int count = 0;
+			if(optionalComment.isPresent()) {
+				commentRepository.delete(optionalComment.get());
+				count++;
+			}
+			
+			return count;
+		
+		}
 	
 	
 	

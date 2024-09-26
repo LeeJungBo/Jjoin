@@ -3,8 +3,9 @@ package com.jung.Jjoin.timeline;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,7 @@ public class TimelineRestController {
 		this.timelineService = timelineService;
 	}
 	
+	
 	@PostMapping("/create")
 	public Map<String, String> timelineCreate(
 			@RequestParam("imageFile") MultipartFile file
@@ -41,10 +43,50 @@ public class TimelineRestController {
 		}else {
 			resultMap.put("result", "fail");
 		}
-			
+		
 		return resultMap;
 	}
 	
+	
+	@PutMapping("/update")
+	public Map<String, String> timelineUpdate(
+			@RequestParam("id") int id
+			, @RequestParam("contents") String contents){
+		
+		Post post = timelineService.updatePost(id, contents);
+		
+		Map<String, String> resultMap = new HashMap<>();
+		if(post != null) {
+			resultMap.put("result", "success");
+		}else {
+			resultMap.put("result", "fail");
+		}
+		
+		return resultMap;
+		
+		
+	}
+	
+	
+	@DeleteMapping("/delete")
+	public Map<String, String> timelineDelete(
+			@RequestParam("postId") int postId
+			, HttpSession session){
+		
+		int userId = (Integer)session.getAttribute("userId");
+		
+		int count = timelineService.deleteTimeline(postId, userId);
+		
+		Map<String, String> resultMap = new HashMap<>();
+		if(count == 1) {
+			resultMap.put("result", "success");
+		}else {
+			resultMap.put("result", "fail");
+		}
+		
+		return resultMap;
+		
+	}
 	
 	
 	
