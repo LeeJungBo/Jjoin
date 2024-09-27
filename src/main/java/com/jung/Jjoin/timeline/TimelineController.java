@@ -44,9 +44,13 @@ public class TimelineController {
 	}
 	
 	@GetMapping("/timeline-update")
-	public String timelineUpdate(){
+	public String timelineUpdate(
+			Model model
+			, @RequestParam("id") int id){
 		
+		Post post = timelineService.getTimelineById(id);
 		
+		model.addAttribute(post);
 		
 		
 		return "timeline/timelineUpdateView";

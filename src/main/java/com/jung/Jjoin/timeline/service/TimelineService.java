@@ -134,7 +134,16 @@ public class TimelineService {
 	}
 	
 	
-	
+	public Post getTimelineById(int id) {
+		
+		Optional<Post> optionalPost= timelineRepository.findById(id);
+		Post post = optionalPost.orElse(null);
+		
+		return post;
+			
+	}
+		
+		
 	
 	
 	

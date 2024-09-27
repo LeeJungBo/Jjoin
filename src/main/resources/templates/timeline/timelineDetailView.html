@@ -35,13 +35,13 @@
 		                           <span th:text="${card.nickname}" class="ml-1"></span>
 	                           </div>
 	                           <div class="mr-1">
-									<div class="dropdown">
-									  <button class="btn dropdown-toggle btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<div class="dropdown" th:if="${card.userId == session.userId}"> <!-- 현재 로그인된 사용자와 게시물의 작성자가 같은 경우에만 설정 3개의 점이 뜨게끔 -->
+									  <button class="btn dropdown-toggle btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
 									     <i class="bi bi-three-dots-vertical"></i>
 									  </button>
 									  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-									    <button class="dropdown-item deletePost-btn" type="button" th:data-post-id="${card.postId}" data-target="#moreModal">삭제</button>
-									    <a href="http://localhost:8080/post/timeline-update"><button class="dropdown-item" type="button">수정</button></a>
+									    <button class="dropdown-item more-btn" type="button" th:data-post-id="${card.postId}" data-toggle="modal" data-target="#moreModal" >삭제</button>
+									    <a th:href="|http://localhost:8080/post/timeline-update?id=${card.postId}|"><button class="dropdown-item" type="button">수정</button></a>
 									  </div>
 									</div>
 	                           </div>
@@ -84,14 +84,15 @@
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-body text-center">
-		        <a href="#">삭제</a>
+		        <a href="#" id="deleteBtn"  data-post-id="${card.postId}">삭제하기</a>
 		      </div>
 		    </div>
 		  </div>
 		</div>
                           
-       
 
+
+       
 
 
 
@@ -102,7 +103,36 @@
         
         $(document).ready(function(){
         	
-        	$("")
+        	$("#deleteBtn").on("click",function(){
+        		
+        		let postId = $(this).data("post-id");
+        		
+        		$.ajax({
+                    type:"delete"
+                    , url:"/timeline/delete"
+                    , data:{"postId":postId}
+                    , success:function(data){
+                        if(data.result == "success"){  // data(API에서 넘오온값만 띄어주고 싶으면 alert보단 console이 낫고, data.result를 띄어주고 싶으면 alert가 낫다)
+                            location.reload();
+                        }else{
+                            alert("삭제 실패");
+                        }
+                    }
+                    , error:function(){
+                        alert("에러!!!!");
+                    }
+                });
+        		
+        	});
+        	
+        	
+        	$(".more-btn").on("click",function(){
+        		
+        		let postId = $(this).data("post-id");
+        		
+        		$("#deleteBtn").data("post-id",postId);<!-- data이름을 넣어준다-->/*버튼을 누르는 순간 모다버튼에 전달*/
+        		
+        	});
         	
         	
         	
@@ -134,28 +164,28 @@
         	
         	
         	
-        	$(".deletePost-btn").on("click", function(){
-        		
-        		let postId = $(this).data("post-id");
-        		
-        		$.ajax({
-        			type:"delete"
-        			, url:"/timeline/delete"
-        			, data:{"postId":postId}
-        		    , success:function(data){
-        		    	if(data.result == "success"){
-        		    		location.reload();
-        		    	}else{
-        		    		alert("삭제 실패");
-        		    	}
-        		    }
-        		    , error:function(){
-        		    	alert("에러!!!!");
-        		    }
-        		});
-        		
-        		
-        	});
+//        	<!--$(".deletePost-btn").on("click", function(){
+//        		
+//      		let postId = $(this).data("post-id");
+//        		
+//        		$.ajax({
+//        			type:"delete"
+//        			, url:"/timeline/delete"
+//        			, data:{"postId":postId}
+//        		    , success:function(data){
+//        		    	if(data.result == "success"){  // data(API에서 넘오온값만 띄어주고 싶으면 alert보단 console이 낫고, data.result를 띄어주고 싶으면 alert가 낫다)
+//        		    		location.reload();
+//        		    	}else{
+//        		    		alert("삭제 실패");
+//        		    	}
+//        		    }
+//        		    , error:function(){
+//        		    	alert("에러!!!!");
+//        		    }
+//        		});
+//        		
+//        		
+//        	});-->
         	
         	
         	

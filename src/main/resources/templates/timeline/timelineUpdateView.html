@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko" 
+    xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>타임라인 수정화면</title>
@@ -18,7 +20,7 @@
                        <div class="mt-1 display-3 font-weight-blod">JJoin</div>
                        <img src="https://cdn.pixabay.com/photo/2022/08/21/22/11/telegram-icon-7402209_1280.png">
                     </div>
-                    <div class="post">
+                    <div class="post" id="timelineUpdateView" th:data-post-id="${post.id}"> <!-- 얘가 있어야 그냥 timelineController에서 id를 전달받고 이 update화면 자체를 띄운다-->
                         <div class="post-up d-flex align-items-center">
                            <div th:if="${session.userId != null}" class="mr-3 d-flex">
                               <div th:if="${session.profileImage != null}" class="ml-1"><img th:src="${session.profileImage}"></div>
@@ -55,6 +57,26 @@
              $(document).ready(function(){
             	 
             	 $("#updateBtn").on("click",function(){
+            		 
+            		 let id = $("#timelineUpdateView").data("post-id");
+            		 let contents = $("#textInput").val();
+            		 
+            		 $.ajax({
+            			 type:"put"
+            			 , url:"/timeline/update"
+            			 , data:{"id":id,"contents":contents}
+            			 , success:function(data){
+            				 if(data.result == "success"){
+            					 location.href = "/post/timeline-Detail";
+            				 }else{
+            					 alert("수정 실패입니다.");
+            				 }
+            			 }
+            			 , error:function(){
+            				 alert("수정 에러입니다.");
+            			 }
+            			 
+            		 });
             		 
             		 
             		 
